@@ -1,0 +1,36 @@
+import { propertiesList } from "../../mock/data.js";
+
+const _propertiesList = [...propertiesList];
+
+export const getAllUser = (req,res) => {
+    res.send(JSON.stringify(_propertiesList));
+  }
+
+export const getSingleUser = (req,res)=>{
+    const id = Number(req.params.id);
+    console.log(id);
+    const property = _propertiesList.find((p) => p.id === id);
+    console.log(property);
+  if(!property){
+    return res.status(404).send("Property Not Found");
+  }
+  res.send(JSON.stringify(property));
+  };
+
+  export const saveUser =  (req, res) => {
+    const _property = req.body;
+    _propertiesList.push(_property);
+  
+    res.send(JSON.stringify({ message: "Data Saved" }));
+  };
+
+  export const deleteUser = (req, res) => {
+    const id = Number(req.params.id);
+    const _property = _propertiesList.find((p) => p.id === id);
+  
+    const index = _propertiesList.indexOf(_property);
+  
+    _propertiesList.splice(index, 1);
+  
+    res.send(JSON.stringify({ message: "Property removed" }));
+  };
