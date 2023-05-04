@@ -1,16 +1,20 @@
 import { propertiesList } from "../../mock/data.js";
+import { ProductModel } from "../../models/ProductModel.js";
 
 const _propertiesList = [...propertiesList];
 
-export const getAllProperties = (req,res) => {
-    res.send(JSON.stringify(_propertiesList));
-  }
+export const getAllProperties =  async(req,res) => {
+ 
+  const properties = await ProductModel.find({})
+
+    res.send(JSON.stringify(properties));
+  };
 
 export const getSingleProperty = (req,res)=>{
     const id = Number(req.params.id);
-    console.log(id);
+    // console.log(id);
     const property = _propertiesList.find((p) => p.id === id);
-    console.log(property);
+    // console.log(property);
   if(!property){
     return res.status(404).send("Property Not Found");
   }
@@ -18,8 +22,8 @@ export const getSingleProperty = (req,res)=>{
   };
 
   export const saveProperty =  (req, res) => {
-    const _property = req.body;
-    _propertiesList.push(_property);
+
+  ProductModel.create(_property)
   
     res.send(JSON.stringify({ message: "Data Saved" }));
   };
