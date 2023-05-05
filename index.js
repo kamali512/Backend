@@ -1,13 +1,14 @@
 import express from "express";
-import {propertiesRoutes,userRoutes} from "./routes/index.js";
 import mongoose from "mongoose";
+import {authRoutes, propertiesRoutes,userRoutes} from "./routes/index.js";
 const app = express()
+
 
 app.use(express.json()); //to parse body in request
 
-mongoose.connect("mongodb://localhost:27017/graana-dp");
+mongoose.connect("mongodb+srv://Kamran:Muhammad512@cluster0.h4l5q.mongodb.net/");
 
-mongoose.connection.on("connectes", () => {
+mongoose.connection.on("connected", () => {
     console.log("Database Connected");
 });
 
@@ -17,6 +18,7 @@ mongoose.connection.on("error" , () => {
 
 app.use('/',propertiesRoutes);
 app.use ('/', userRoutes)
+app.use("/", authRoutes);
 app.listen(4000);
 
 

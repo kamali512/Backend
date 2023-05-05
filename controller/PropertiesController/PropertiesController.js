@@ -3,29 +3,32 @@ import { ProductModel } from "../../models/ProductModel.js";
 
 const _propertiesList = [...propertiesList];
 
-export const getAllProperties =  async(req,res) => {
+export const getAllProperties =  async (req,res) => {
  
   const properties = await ProductModel.find({})
 
     res.send(JSON.stringify(properties));
   };
 
-export const getSingleProperty = (req,res)=>{
-    const id = Number(req.params.id);
-    // console.log(id);
-    const property = _propertiesList.find((p) => p.id === id);
-    // console.log(property);
-  if(!property){
-    return res.status(404).send("Property Not Found");
-  }
-  res.send(JSON.stringify(property));
+export const getSingleProperty = async(req,res)=>{
+    // const id = Number(req.params.id);
+    try{
+      const property = await ProductModel.findById(req.params.id);
+
+      if(!property){
+        return res.status(404).send("Property Not Found");
+      }
+      res.send(property);
+    }catch{
+      res.status(404).send({error: 'Property with the given id not found'})
+    }
   };
 
-  export const saveProperty =  (req, res) => {
-
-  ProductModel.create(_property)
+  export const saveProperty =  async (req, res) => {
+       const _property = req.body;
+      await ProductModel.create(_property);
   
-    res.send(JSON.stringify({ message: "Data Saved" }));
+    res.json({ message: "Data Saved" });
   };
 
   export const deleteProperty = (req, res) => {
